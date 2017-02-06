@@ -357,6 +357,67 @@ RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
     echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc \
 ;fi
 
+#####################################
+# Python:
+#####################################
+USER root
+
+ARG INSTALL_PYTHON=true
+ENV INSTALL_PYTHON ${INSTALL_PYTHON}
+
+RUN if [ ${INSTALL_PYTHON} = true && ${INSTALL_LINUXBREW} = true ]; then \
+
+    # Install Python
+    brew install python3 && \
+
+    python3 -V \
+;fi
+
+#####################################
+# Heroku-cli:
+#####################################
+USER root
+
+ARG INSTALL_HEROKU=true
+ENV INSTALL_HEROKU ${INSTALL_HEROKU}
+
+RUN if [ ${INSTALL_HEROKU} = true ]; then \
+
+    # Preparation
+    apt-get install software-properties-common curl && \
+    add-apt-repository "deb https://cli-assets.heroku.com/branches/stable/apt ./" && \
+    curl -L https://cli-assets.heroku.com/apt/release.key | apt-key add - && \
+    apt-get update && \
+
+    # Install heroku-cli
+    apt-get -y install heroku && \
+
+    # Verify heroku-cli
+    heroku --version \
+;fi
+
+#####################################
+# Premailer:
+#####################################
+USER root
+
+ARG INSTALL_PREMAILER=true
+ENV INSTALL_PREMAILER ${INSTALL_PREMAILER}
+
+RUN if [ ${INSTALL_PREMAILER} = true ]; then \
+
+    # Preparation
+    apt-get -y install ruby-full && \
+    apt-get update && \
+
+    # Install heroku-cli
+    gem install nokogiri && \
+    gem install premailer && \
+
+    # Verify heroku-cli
+    heroku --version \
+;fi
+
 #
 #--------------------------------------------------------------------------
 # Final Touch
