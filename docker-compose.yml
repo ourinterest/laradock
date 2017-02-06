@@ -18,8 +18,8 @@ services:
             args:
                 - INSTALL_XDEBUG=false
                 - INSTALL_MONGO=false
-                - INSTALL_NODE=false
-                - INSTALL_YARN=false
+                - INSTALL_NODE=true
+                - INSTALL_YARN=true
                 - INSTALL_DRUSH=false
                 - INSTALL_AEROSPIKE_EXTENSION=false
                 - INSTALL_V8JS_EXTENSION=false
@@ -27,7 +27,10 @@ services:
                 - INSTALL_WORKSPACE_SSH=false
                 - INSTALL_LARAVEL_ENVOY=false
                 - INSTALL_DEPLOYER=false
-                - INSTALL_LINUXBREW=false
+                - INSTALL_LINUXBREW=true
+                - INSTALL_PYTHON=true
+                - INSTALL_HEROKU=true
+                - INSTALL_PREMAILER=true
                 - PUID=1000
                 - PGID=1000
                 - NODE_VERSION=stable
@@ -37,9 +40,10 @@ services:
             - applications
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-            - "dockerhost:10.0.75.1"
+            - "dockerhost:172.18.0.5"
         ports:
            - "2222:22"
+           - "5000:5000"
         tty: true
 
 ### PHP-FPM Container #######################################
@@ -125,8 +129,8 @@ services:
         build:
             context: ./mysql
             args:
-                - MYSQL_DATABASE=homestead
-                - MYSQL_USER=homestead
+                - MYSQL_DATABASE=hypoteket
+                - MYSQL_USER=hypoteket
                 - MYSQL_PASSWORD=secret
                 - MYSQL_ROOT_PASSWORD=root
         volumes:
@@ -143,8 +147,8 @@ services:
         ports:
             - "3306:3306"
         environment:
-            MYSQL_DATABASE: homestead
-            MYSQL_USER: homestead
+            MYSQL_DATABASE: hypoteket
+            MYSQL_USER: hypoteket
             MYSQL_PASSWORD: secret
             MYSQL_ROOT_PASSWORD: root
 
@@ -155,10 +159,10 @@ services:
         volumes:
             - postgres:/var/lib/postgresql/data
         ports:
-            - "5432:5432"
+            - "5433:5432"
         environment:
-            POSTGRES_DB: homestead
-            POSTGRES_USER: homestead
+            POSTGRES_DB: hypoteket
+            POSTGRES_USER: hypoteket
             POSTGRES_PASSWORD: secret
 
 ### PostgreSQL PostGis Container ############################
@@ -170,8 +174,8 @@ services:
         ports:
             - "5432:5432"
         environment:
-            POSTGRES_DB: homestead
-            POSTGRES_USER: homestead
+            POSTGRES_DB: hypoteket
+            POSTGRES_USER: hypoteket
             POSTGRES_PASSWORD: secret
 
 ### Neo4j Container #########################################
@@ -182,7 +186,7 @@ services:
             - "7474:7474"
             - "1337:1337"
         environment:
-            - NEO4J_AUTH=homestead:secret
+            - NEO4J_AUTH=hypoteket:secret
         volumes:
             - neo4j:/var/lib/neo4j/data
 
@@ -295,7 +299,7 @@ services:
         build: ./phpmyadmin
         environment:
             PMA_ARBITRARY: 1
-            MYSQL_USER: homestead
+            MYSQL_USER: hypoteket
             MYSQL_PASSWORD: secret
             MYSQL_ROOT_PASSWORD: root
         ports:
