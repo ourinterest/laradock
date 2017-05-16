@@ -426,7 +426,7 @@ USER root
 ARG INSTALL_LFTP=true
 ENV INSTALL_LFTP ${INSTALL_LFTP}
 
-RUN if [ ${INSTALL_LFTP} = true ]; then \   
+RUN if [ ${INSTALL_LFTP} = true ]; then \
 
     # Install lftp
     apt-get install -y lftp && \
