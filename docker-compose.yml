@@ -33,7 +33,7 @@ services:
                 - INSTALL_PREMAILER=true
                 - PUID=1000
                 - PGID=1000
-                - NODE_VERSION=stable
+                - NODE_VERSION=7.8
                 - YARN_VERSION=latest
                 - TZ=Europe/Stockholm
         volumes_from:
