@@ -96,7 +96,7 @@ RUN echo "" >> ~/.bashrc && \
     echo "# Load Custom Aliases" >> ~/.bashrc && \
     echo "source /home/laradock/aliases.sh" >> ~/.bashrc && \
     echo "" >> ~/.bashrc
-    
+
 USER root
 RUN echo "" >> ~/.bashrc && \
     echo "# Load Custom Aliases" >> ~/.bashrc && \
@@ -416,6 +416,22 @@ RUN if [ ${INSTALL_PREMAILER} = true ]; then \
 
     # Verify heroku-cli
     heroku --version \
+;fi
+
+#####################################
+# lftp:
+#####################################
+USER root
+
+ARG INSTALL_LFTP=true
+ENV INSTALL_LFTP ${INSTALL_LFTP}
+
+RUN if [ ${INSTALL_LFTP} = true ]; then \   
+
+    # Install lftp
+    apt-get install -y lftp && \
+
+    lftp -v \
 ;fi
 
 #
