@@ -32,6 +32,7 @@ services:
                 - INSTALL_HEROKU=true
                 - INSTALL_PREMAILER=true
                 - INSTALL_LFTP=false
+                - INSTALL_PUPPETEER=true
                 - PUID=1000
                 - PGID=1000
                 - NODE_VERSION=8
