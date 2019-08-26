@@ -72,11 +72,11 @@ ENV COMPOSER_GLOBAL_INSTALL ${COMPOSER_GLOBAL_INSTALL}
 RUN if [ ${COMPOSER_GLOBAL_INSTALL} = true ]; then \
     # run the install
     composer global install \
-;fi
+    ;fi
 
 # Export composer vendor path
 RUN echo "" >> ~/.bashrc && \
-echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc
+    echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc
 
 #####################################
 # Crontab
@@ -114,7 +114,7 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     apt-get install -y --force-yes php7.0-xdebug && \
     sed -i 's/^/;/g' /etc/php/7.0/cli/conf.d/20-xdebug.ini && \
     echo "alias phpunit='php -dzend_extension=xdebug.so /var/www/vendor/bin/phpunit'" >> ~/.bashrc \
-;fi
+    ;fi
 # ADD for REMOTE debugging
 COPY ./xdebug.ini /etc/php/7.0/cli/conf.d/xdebug.ini
 
@@ -130,12 +130,12 @@ ADD insecure_id_rsa.pub /tmp/id_rsa.pub
 RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
     rm -f /etc/service/sshd/down && \
     cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys \
-        && cat /tmp/id_rsa.pub >> /root/.ssh/id_rsa.pub \
-        && cat /tmp/id_rsa >> /root/.ssh/id_rsa \
-        && rm -f /tmp/id_rsa* \
-        && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
+    && cat /tmp/id_rsa.pub >> /root/.ssh/id_rsa.pub \
+    && cat /tmp/id_rsa >> /root/.ssh/id_rsa \
+    && rm -f /tmp/id_rsa* \
+    && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
     && chmod 400 /root/.ssh/id_rsa \
-;fi
+    ;fi
 
 #####################################
 # MongoDB:
@@ -148,7 +148,7 @@ RUN if [ ${INSTALL_MONGO} = true ]; then \
     # Install the mongodb extension
     pecl install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.0/cli/conf.d/30-mongodb.ini \
-;fi
+    ;fi
 
 #####################################
 # Drush:
@@ -162,7 +162,7 @@ RUN if [ ${INSTALL_DRUSH} = true ]; then \
     curl -fsSL -o /usr/local/bin/drush https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar | bash && \
     chmod +x /usr/local/bin/drush && \
     drush core-status \
-;fi
+    ;fi
 
 USER laradock
 
@@ -179,12 +179,12 @@ ENV NVM_DIR /home/laradock/.nvm
 RUN if [ ${INSTALL_NODE} = true ]; then \
     # Install nvm (A Node Version Manager)
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.6/install.sh | bash && \
-        . $NVM_DIR/nvm.sh && \
-        nvm install ${NODE_VERSION} && \
-        nvm use ${NODE_VERSION} && \
-        nvm alias ${NODE_VERSION} && \
-        npm install -g gulp bower vue-cli knex snyk \
-;fi
+    . $NVM_DIR/nvm.sh && \
+    nvm install ${NODE_VERSION} && \
+    nvm use ${NODE_VERSION} && \
+    nvm alias ${NODE_VERSION} && \
+    npm install -g gulp bower vue-cli knex snyk \
+    ;fi
 
 # Wouldn't execute when added to the RUN statement in the above block
 # Source NVM when loading bash since ~/.profile isn't loaded on non-login shell
@@ -192,7 +192,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo "" >> ~/.bashrc && \
     echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
-;fi
+    ;fi
 
 # Add NVM binaries to root's .bashrc
 USER root
@@ -201,7 +201,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo "" >> ~/.bashrc && \
     echo 'export NVM_DIR="/home/laradock/.nvm"' >> ~/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
-;fi
+    ;fi
 
 #####################################
 # YARN:
@@ -217,13 +217,13 @@ ENV YARN_VERSION ${YARN_VERSION}
 RUN if [ ${INSTALL_YARN} = true ]; then \
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
     if [ ${YARN_VERSION} = "latest" ]; then \
-        curl -o- -L https://yarnpkg.com/install.sh | bash; \
+    curl -o- -L https://yarnpkg.com/install.sh | bash; \
     else \
-        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version ${YARN_VERSION}; \
+    curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version ${YARN_VERSION}; \
     fi && \
     echo "" >> ~/.bashrc && \
     echo 'export PATH="$HOME/.yarn/bin:$PATH"' >> ~/.bashrc \
-;fi
+    ;fi
 
 # Add YARN binaries to root's .bashrc
 USER root
@@ -232,7 +232,7 @@ RUN if [ ${INSTALL_YARN} = true ]; then \
     echo "" >> ~/.bashrc && \
     echo 'export YARN_DIR="/home/laradock/.yarn"' >> ~/.bashrc && \
     echo 'export PATH="$YARN_DIR/bin:$PATH"' >> ~/.bashrc \
-;fi
+    ;fi
 
 #####################################
 # PHP Aerospike:
@@ -251,17 +251,17 @@ RUN if [ ${INSTALL_AEROSPIKE_EXTENSION} = true ]; then \
     && mkdir -p aerospike-client-php \
     && tar -C aerospike-client-php -zxvf /tmp/aerospike-client-php.tar.gz --strip 1 \
     && ( \
-        cd aerospike-client-php/src/aerospike \
-        && phpize \
-        && ./build.sh \
-        && make install \
+    cd aerospike-client-php/src/aerospike \
+    && phpize \
+    && ./build.sh \
+    && make install \
     ) \
     && rm /tmp/aerospike-client-php.tar.gz \
-;fi
+    ;fi
 
 RUN if [ ${INSTALL_AEROSPIKE_EXTENSION} = false ]; then \
     rm /etc/php/7.0/cli/conf.d/aerospike.ini \
-;fi
+    ;fi
 
 #####################################
 # PHP V8JS:
@@ -278,7 +278,7 @@ RUN if [ ${INSTALL_V8JS_EXTENSION} = true ]; then \
     && apt-get install -y php-dev php-pear libv8-5.4 \
     && pecl install v8js \
     && echo "extension=v8js.so" >> /etc/php/7.0/cli/php.ini \
-;fi
+    ;fi
 
 #####################################
 # Non-root user : PHPUnit path
@@ -309,7 +309,7 @@ ENV INSTALL_LARAVEL_ENVOY ${INSTALL_LARAVEL_ENVOY}
 RUN if [ ${INSTALL_LARAVEL_ENVOY} = true ]; then \
     # Install the Laravel Envoy
     composer global require "laravel/envoy=~1.0" \
-;fi
+    ;fi
 
 #####################################
 # Deployer:
@@ -322,7 +322,7 @@ ENV INSTALL_DEPLOYER ${INSTALL_DEPLOYER}
 RUN if [ ${INSTALL_DEPLOYER} = true ]; then \
     # Install the Deployer
     composer global require "deployer/deployer" \
-;fi
+    ;fi
 
 #####################################
 # Linuxbrew:
@@ -338,10 +338,10 @@ RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
     apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y build-essential make cmake scons curl git \
-      ruby autoconf automake autoconf-archive \
-      gettext libtool flex bison \
-      libbz2-dev libcurl4-openssl-dev \
-      libexpat-dev libncurses-dev && \
+    ruby autoconf automake autoconf-archive \
+    gettext libtool flex bison \
+    libbz2-dev libcurl4-openssl-dev \
+    libexpat-dev libncurses-dev && \
 
     # Install the Linuxbrew
     git clone https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew && \
@@ -355,7 +355,7 @@ RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
     echo 'export MANPATH="$LINUXBREWHOME/man:$MANPATH"' >> ~/.bashrc && \
     echo 'export PKG_CONFIG_PATH="$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc && \
     echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc \
-;fi
+    ;fi
 
 #####################################
 # Python:
@@ -371,7 +371,7 @@ RUN if [ ${INSTALL_PYTHON} = true && ${INSTALL_LINUXBREW} = true ]; then \
     brew install python3 && \
 
     python3 -V \
-;fi
+    ;fi
 
 #####################################
 # Heroku-cli:
@@ -394,7 +394,7 @@ RUN if [ ${INSTALL_HEROKU} = true ]; then \
 
     # Verify heroku-cli
     heroku --version \
-;fi
+    ;fi
 
 #####################################
 # Premailer:
@@ -411,12 +411,13 @@ RUN if [ ${INSTALL_PREMAILER} = true ]; then \
     apt-get update && \
 
     # Install heroku-cli
+    apt-get -y install build-essential patch ruby-dev zlib1g-dev liblzma-dev && \
     gem install nokogiri && \
     gem install premailer && \
 
     # Verify heroku-cli
     heroku --version \
-;fi
+    ;fi
 
 #####################################
 # lftp:
@@ -432,7 +433,7 @@ RUN if [ ${INSTALL_LFTP} = true ]; then \
     apt-get install -y lftp && \
 
     lftp -v \
-;fi
+    ;fi
 
 #####################################
 # puppeteer:
@@ -448,15 +449,15 @@ RUN if [ ${INSTALL_PUPPETEER} = true ]; then \
     # Note: this installs the necessary libs to make the bundled version of Chromium that Pupppeteer
     # installs, work.
     apt-get update && apt-get install -y wget --no-install-recommends \
-        && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-        && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-        && apt-get update \
-        && apt-get install -y google-chrome-unstable \
-          --no-install-recommends \
-        && rm -rf /var/lib/apt/lists/* \
-        && apt-get purge --auto-remove -y curl \
-        && rm -rf /src/*.deb \
-;fi
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-unstable \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get purge --auto-remove -y curl \
+    && rm -rf /src/*.deb \
+    ;fi
 
 #
 #--------------------------------------------------------------------------
