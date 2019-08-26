@@ -323,16 +323,16 @@ services:
 
 ### ElasticSearch Container #################################
 
-    elasticsearch:
-        build: ./elasticsearch
-        volumes:
-            - elasticsearch-data:/usr/share/elasticsearch/data
-            - elasticsearch-plugins:/usr/share/elasticsearch/data
-        ports:
-            - "9200:9200"
-            - "9300:9300"
-        links:
-            - php-fpm
+    # elasticsearch:
+    #     build: ./elasticsearch
+    #     volumes:
+    #         - elasticsearch-data:/usr/share/elasticsearch/data
+    #         - elasticsearch-plugins:/usr/share/elasticsearch/data
+    #     ports:
+    #         - "9200:9200"
+    #         - "9300:9300"
+    #     links:
+    #         - php-fpm
 
 ### Selenium Container #########################################
 
