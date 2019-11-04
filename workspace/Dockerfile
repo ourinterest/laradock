@@ -37,6 +37,8 @@ MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 #   - ...
 #
 
+ENV DEBIAN_FRONTEND noninteractive
+
 #####################################
 # Non-Root User:
 #####################################
@@ -117,6 +119,21 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     ;fi
 # ADD for REMOTE debugging
 COPY ./xdebug.ini /etc/php/7.0/cli/conf.d/xdebug.ini
+
+
+# Install "libraries", "Software's"
+RUN apt-get update && \
+    export DEBIAN_FRONTEND=noninteractive && apt-get install -y --option=Dpkg::Options::="--force-confold" --allow-downgrades --allow-remove-essential \
+    --allow-change-held-packages \
+    git \
+    curl \
+    vim \
+    nano \
+    postgresql-client \
+    python \
+    python2.7 \
+    python3 \
+    && apt-get clean
 
 #####################################
 # ssh:
@@ -357,21 +374,6 @@ RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
     echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc \
     ;fi
 
-#####################################
-# Python:
-#####################################
-USER root
-
-ARG INSTALL_PYTHON=true
-ENV INSTALL_PYTHON ${INSTALL_PYTHON}
-
-RUN if [ ${INSTALL_PYTHON} = true && ${INSTALL_LINUXBREW} = true ]; then \
-
-    # Install Python
-    brew install python3 && \
-
-    python3 -V \
-    ;fi
 
 #####################################
 # Heroku-cli:
