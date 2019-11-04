@@ -27,8 +27,7 @@ services:
                 - INSTALL_WORKSPACE_SSH=false
                 - INSTALL_LARAVEL_ENVOY=false
                 - INSTALL_DEPLOYER=false
-                - INSTALL_LINUXBREW=true
-                - INSTALL_PYTHON=true
+                - INSTALL_LINUXBREW=false
                 - INSTALL_HEROKU=true
                 - INSTALL_PREMAILER=true
                 - INSTALL_LFTP=false
