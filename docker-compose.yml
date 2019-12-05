@@ -37,11 +37,13 @@ services:
                 - NODE_VERSION=10
                 - YARN_VERSION=latest
                 - TZ=UTC
+        environment:
+                - GH_TOKEN=put-your-github-token-here
         volumes_from:
             - applications
         extra_hosts:
             # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-            - "dockerhost:172.18.0.5"
+            - "dockerhost:127.0.0.1"
         ports:
            - "2222:22"
            - "5000:5000"
