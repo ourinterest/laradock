@@ -37,6 +37,8 @@ services:
                 - NODE_VERSION=10
                 - YARN_VERSION=latest
                 - TZ=UTC
+        environment:
+                - GH_TOKEN=put-your-github-token-here
         volumes_from:
             - applications
         extra_hosts:
